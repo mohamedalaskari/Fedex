@@ -24,7 +24,7 @@ class StoreProductLineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "line_name"=>"required|unique:product_lines,line_name"
+            "line_name"=>"required"
         ];
     }
 }

@@ -28,7 +28,7 @@ class UpdateEmployeeRequest extends FormRequest
             'last_name'=>'required|string|max:15',
             'employee_image'=>'required|image|mimes:png,jpg|max:2048',
             'birth_date'=>'required|date',
-            'email'=>'required|email',
+            'email'=>'required|email|unique:employees,email',
             'password'=>'required|confirmed|max:12|min:8',
         ];
     }

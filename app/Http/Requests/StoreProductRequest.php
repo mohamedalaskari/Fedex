@@ -25,7 +25,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             "product_image"=>"required|image|max:4",
-            "product_name"=>"required|unique:products,product_name",
+            "product_name"=>"required",
             "product_price"=>"required|regex:/\d/",
             "quntity_stock"=>"required|regex:/\d/"
         ];

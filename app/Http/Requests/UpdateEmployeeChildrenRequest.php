@@ -28,7 +28,7 @@ class UpdateEmployeeChildrenRequest extends FormRequest
             'last_name'=>'required|string|max:15',
             'employee_childern_image'=>'required|image|mimes:png,jpg|max:2048',
             'birth_date'=>'required|date',
-            'email'=>'required|email',
+            'email'=>'required|email|unique:employee_childrens,email|unique:employee_childrens,email',
             'password'=>'required|confirmed|max:12|min:8',
         ];
     }
