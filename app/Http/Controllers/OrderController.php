@@ -53,13 +53,23 @@ class OrderController extends Controller
         $orderDetails = str_replace(' ', '', $orderDetails->validated());
         $orderDetails['order_id'] = $insert_order->id;
         $orderDetails['product_id'] = $product['id'];
-        $orderDetails['price'] = $product['product_price'] * $orderDetails['quntity_order'];
-
+        $customer = Auth::user()->tokenable_type;
+        $employee = Auth::user()->tokenable_type;
+        $employee_children = Auth::user()->tokenable_type;
+        if ($customer == "Customer") {
+            $orderDetails['price'] = $product['product_price'] * $orderDetails['quntity_order'];
+        } elseif ($employee == "employee") {
+            $discount_employee = $product['product_price'] * $orderDetails['quntity_order'] * 0.15;
+            $orderDetails['price'] = $product['product_price'] * $orderDetails['quntity_order'] - $discount_employee;
+        } elseif ($employee_children == "employeeChildren") {
+            $discount_employee_children = $product['product_price'] * $orderDetails['quntity_order'] * 0.10;
+            $orderDetails['price'] = $product['product_price'] * $orderDetails['quntity_order'] - $discount_employee_children;
+        }
         $insert_order_detalis = OrderDetails::create($orderDetails);
         $quntity = $product->quntity_stock - $orderDetails['quntity_order'];
 
-        $update_quntity_product=DB::table('products')->where('product_name',$product['product_name'])->update(['quntity_stock'=>$quntity]);
-        return $this->response(code:200,data:$insert_order_detalis);
+        $update_quntity_product = DB::table('products')->where('product_name', $product['product_name'])->update(['quntity_stock' => $quntity]);
+        return $this->response(code: 200, data: $insert_order_detalis);
     }
 
     /**
@@ -99,8 +109,8 @@ class OrderController extends Controller
     public function delete(Order $order)
     {
         Gate::authorize('delete', $order);
-        $delete= $order->delete();
-        return $this->response(code:204);
+        $delete = $order->delete();
+        return $this->response(code: 204);
     }
     public function deleted()
     {
@@ -108,8 +118,8 @@ class OrderController extends Controller
     }
     public function restore($order)
     {
-        $restore= Order::where('id', $order)->restore();
-        return $this->response(code:200);
+        $restore = Order::where('id', $order)->restore();
+        return $this->response(code: 200);
     }
     public function delete_from_trash($order)
     {

@@ -24,7 +24,7 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "product_name"=>"required|unique:products,product_name",
+            "product_name"=>"required",
         ];
     }
 }
